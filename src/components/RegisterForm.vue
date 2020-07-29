@@ -165,7 +165,6 @@ export default {
 
 <style scoped lang="scss">
 .main_form {
-  width: 500px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -176,25 +175,39 @@ export default {
 }
 
 .main_form {
+  width: 40%;
+  
   input,
   select {
+    box-sizing: border-box;
     margin: 0 0 10px;
+    width: 100%;
     padding: 10px;
     border: none;
     outline: none;
     border-radius: 10px;
     font-weight: bolder;
     box-shadow: 0 4px 5px #ccc;
+    -webkit-box-shadow: 0 4px 5px #ccc;
     &.invalid {
       box-shadow: 0 4px 5px rgb(255, 129, 129);
+      -webkit-box-shadow: 0 4px 5px rgb(255, 129, 129);
     }
+    &[type="checkbox"] {
+      align-self: flex-start;
+    }
+  }
+  span{ 
+    width: 100%;
   }
   small {
     color: rgb(255, 129, 129);
     align-self: start;
     font-weight: bold;
+    width: 100%;
   }
   button {
+    width: 100%;
     margin: 0 0 10px;
     padding: 10px;
     border: none;
@@ -202,6 +215,8 @@ export default {
     border-radius: 10px;
     font-weight: bolder;
     box-shadow: 0 4px 5px #ccc;
+     -webkit-box-shadow: 0 4px 5px #ccc;
+    
     background: yellowgreen;
     cursor: pointer;
     &:hover {
@@ -216,15 +231,24 @@ export default {
     }
   }
 
-  .group {
-    align-self: start;
-    label {
-      margin: 0 0 0 5px;
-    }
-  }
+  
 }
 
+.group {
+    width: 100%;
+    align-self: start;
+    text-align: left;
+    label {
+      width: 100%;
+      margin: 0 0 0 5px;
+    }
+    input {
+      width: unset;
+      border-radius: 0;
+    }
+  }
 span {
+  width: 100%;
   font-size: 30px;
   font-weight: bolder;
   text-shadow: 0 3px 3px white;
