@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <form class="main_form" @input="onInp" @click="onInp">
+    <form class="main_form" name="new" @input="onInp" @click="onInp">
       <span class="form_block_title">Персональная информация</span>
       <input
         id="0"
@@ -74,7 +74,7 @@
       <span class="form_block_title">Адрес</span>
       <input type="number" placeholder="Индекс " />
       <input type="text" placeholder="Страна " />
-      <input type="text" placeholder="Область " />
+      <input type="text"  placeholder="Область " />
 
       <input
         type="text"
@@ -94,7 +94,6 @@
       <input type="text" placeholder="Дом " />
       <span class="form_block_title">Документ</span>
 
-      <input type="text" placeholder="Тип документа (Обязательно)" />
       <select
         v-model="doctype"
         @click="$v.doctype.$touch()"
@@ -114,22 +113,22 @@
       <input type="number" placeholder="Номер " />
       <input type="text" placeholder="Кем выдан " />
       <input type="date" placeholder="дата выдачи (Обязательно)" />
-      <button type="button" v-if="this.$v.$anyError" disabled>Сохранить</button>
-      <button type="button" v-else>Сохранить</button>
+
+
+      <button type="button" v-if="this.$v.$anyError"  disabled>Сохранить</button>
+      <button type="button" v-else @click="onSubmit" >Сохранить</button>
+      <span>{{ success }}</span>
+
+
     </form>
   </div>
 </template>
 
 <script>
-import { email, helpers, required, minLength } from "vuelidate/lib/validators";
+import { helpers, required, minLength } from "vuelidate/lib/validators";
 const alpha = helpers.regex("alpha", /^[а-яА-Яa-zA-Z]*$/);
 
-export default {
-  name: "RegisterForm",
-  //props: ["inputs"],
-  ///vuelidate
-
-  data: () => ({
+const defaultData = ()=>({
     lastName: "",
     name: "",
     birthday: "",
@@ -139,10 +138,16 @@ export default {
     doctor: "Лечащий врач",
     doctype: "Тип документа",
     docdate: "",
-    sms: false
-  }),
+    sms: false,
+    success: '', 
+  })
+export default {
+  name: "RegisterForm",
+  //props: ["inputs"],
+  ///vuelidate
+
+  data: () => defaultData(),
   validations: {
-    email: { email, required },
     lastName: { alpha, required, minLength: minLength(2) },
     name: { alpha, required, minLength: minLength(2) },
     group: { required },
@@ -151,15 +156,43 @@ export default {
     city: { required, minLength: minLength(3), alpha },
     doctype: {required}
   },
-
+  
   ///методы
   methods: {
-    onInp() {
+
+    resetData(){
+      Object.assign(this.$data, defaultData())
+    },
+    onInp(){
       console.log(this.$v);
+    },
+//при сабмите формы забираем все введённые данные в форму + выводим сообщение "новый клиент успешно создан"
+    onSubmit() {
+      const formData = {};
+      this.$v.$touch();
+       if(!this.$v.$anyError) {
+         
+        
+         for (let key in this.$v) { 
+           if(!key.includes('$')) {
+             formData[key] = this.$v[key].$model;
+           }
+         }
+         console.log(formData);
+         this.$v.$reset();
+         this.resetData();
+         
+         this.success = 'Новый клиент успешно создан'; 
+         setTimeout(()=>{
+            this.success = '';
+         }, 3000);
+         
+       }
     }
   }
   //конец методов
 };
+
 </script>
 
 
@@ -189,12 +222,19 @@ export default {
     font-weight: bolder;
     box-shadow: 0 4px 5px #ccc;
     -webkit-box-shadow: 0 4px 5px #ccc;
+    -webkit-appearance: none;
+    
     &.invalid {
       box-shadow: 0 4px 5px rgb(255, 129, 129);
       -webkit-box-shadow: 0 4px 5px rgb(255, 129, 129);
+      -webkit-appearance: none;
     }
     &[type="checkbox"] {
       align-self: flex-start;
+      -webkit-appearance: checkbox;
+    }
+    &[type="date"] {
+      width: 100%;
     }
   }
   span{ 
@@ -216,7 +256,7 @@ export default {
     font-weight: bolder;
     box-shadow: 0 4px 5px #ccc;
      -webkit-box-shadow: 0 4px 5px #ccc;
-    
+    -webkit-appearance: none;
     background: yellowgreen;
     cursor: pointer;
     &:hover {
@@ -252,5 +292,11 @@ span {
   font-size: 30px;
   font-weight: bolder;
   text-shadow: 0 3px 3px white;
+}
+
+@media screen and(max-width: 530px) {
+      .main_form {
+        width: 70%;
+      }
 }
 </style>
