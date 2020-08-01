@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <form class="main_form" name="new" @input="onInp" @click="onInp">
+    <form class="main_form" name="new" >
       <span class="form_block_title">Персональная информация</span>
       <input
         id="0"
@@ -9,6 +9,7 @@
         v-model.trim="lastName"
         @input="$v.lastName.$touch()"
         :class="{invalid: ($v.lastName.$error)}"
+        required
       />
       <small class="error" v-if="!$v.lastName.minLength">Фамилия не может состоять из 1 буквы</small>
       <small class="error" v-else-if="!$v.lastName.alpha">Фамилия должна состоять только из букв</small>
@@ -28,41 +29,63 @@
       <small class="error" v-else-if="$v.name.$dirty && !$v.name.required">Введите имя</small>
 
       <input id="2" type="text" placeholder="Отчество " />
-      <input id="3" type="date" placeholder="Дата рождения (Обязательно)" />
-      <input id="4" type="tel" placeholder="+7(000)00-00-00 (Обязательно)" />
-      <input id="5" type="text" placeholder="Пол " />
-      <!--Это должен быть мультиселект-->
+      <label for="birth">Дата рождения (обязательно)</label>
+      <input id="3" name="birth" type="date"
+      v-model="birthday"
+      @input="$v.birthday.$touch()"
+      :class="{invalid: (!$v.birthday.$required && $v.birthday.$dirty && $v.birthday.$error)}"
+      />
+      <small class="error" v-if="(!$v.birthday.$required && $v.birthday.$dirty && $v.birthday.$error)">Введите дату рождения</small>
+      <input id="4" type="number" placeholder="7000000000 (Обязательно)" 
+      v-model="tel"
+      @input="$v.tel.$touch()"
+      :class="{invalid: ($v.tel.$error)}"
+      />
+      <small
+        class="error"
+        v-if="$v.tel.$dirty && !$v.tel.$minLength && $v.tel.required && (Number(tel.slice(0,1)) === 7) && $v.tel.$error"
+      >Телефон должен состоять из 11 цифр (вы ввели {{tel.length}})</small>
+      <small
+        class="error"
+        v-else-if="$v.tel.$dirty && (Number(tel.slice(0,1)) !== 7) && (tel.length > 0)"
+      >Телефон должен начинаться с 7</small>
+      <small
+        class="error"
+        v-else-if="$v.tel.$dirty && !$v.tel.required"
+      >Введите телефон</small>
+       <select
+        v-model="sex"
+      >
+      <option disabled hidden >Пол</option>
+        <option>Мужской</option>
+        <option>Женский</option>
+        <option>Другой</option>
+       </select>
+     
       <select multiple
         v-model="group"
-        @click="$v.group.$touch()"
-        :class="{invalid: ($v.group.$dirty && $v.group.$model === 'Группа пациентов')}"
+        :class="[{invalid: ($v.group.$dirty && $v.group.$model[0] === 'Группа пациентов (обязательно)' && $v.group.$model.length === 1)}]"
       >
-        <option disabled >Группа пациентов</option>
-        <option>Vip</option>
-        <option>Проблемные</option>
-        <option>ОМС</option>
+        <option disabled >Группа пациентов (обязательно)</option>
+        <option >Vip</option>
+        <option >Проблемные</option>
+        <option >ОМС</option>
       </select>
 
       <small
         class="error"
-        v-if="$v.group.$dirty && $v.group.$model === 'Группа пациентов'"
+        v-if="$v.group.$dirty && $v.group.$model[0] === 'Группа пациентов (обязательно)' && $v.group.$model.length === 1"
       >Выберите группу пациентов</small>
 
       <select
         v-model="doctor"
-        @click="$v.doctor.$touch()"
-        :class="{invalid: ($v.doctor.$dirty && $v.doctor.$model === 'Лечащий врач')}"
+        
       >
-        <option disabled >Лечащий врач</option>
+        <option disabled hidden>Лечащий врач</option>
         <option>Иванов</option>
         <option>Захаров</option>
         <option>Чернышева</option>
       </select>
-
-      <small
-        class="error"
-        v-if="$v.doctor.$dirty && $v.doctor.$model === 'Лечащий врач'"
-      >Выберите врача</small>
 
 
       <div class="group">
@@ -94,25 +117,34 @@
       <input type="text" placeholder="Дом " />
       <span class="form_block_title">Документ</span>
 
+
       <select
+      name="doctype"
         v-model="doctype"
         @click="$v.doctype.$touch()"
-        :class="{invalid: ($v.doctype.$dirty && $v.doctype.$model === 'Тип документа')}"
+        :class="{invalid: ($v.doctype.$dirty && $v.doctype.$model === 'Тип документа (обязательно)')}"
       >
-        <option disabled >Тип документа</option>
+      
+        <option disabled hidden >Тип документа (обязательно)</option>
         <option>Паспорт</option>
         <option>Свидетельство о рождении</option>
         <option>Вод. удостоверение</option>
       </select>
       <small
         class="error"
-        v-if="$v.doctype.$dirty && $v.doctype.$model === 'Тип документа'"
+        v-if="$v.doctype.$dirty && $v.doctype.$model === 'Тип документа (обязательно)'"
       >Выберите тип документа</small>
 
       <input type="number" placeholder="Серия " />
       <input type="number" placeholder="Номер " />
       <input type="text" placeholder="Кем выдан " />
-      <input type="date" placeholder="дата выдачи (Обязательно)" />
+      <label for="docdate">Дата выдачи (обязательно)</label>
+      <input type="date" name="docdate"
+      v-model="docdate"
+      @input="$v.docdate.$touch()"
+      :class="{invalid: (!$v.docdate.$required && $v.docdate.$dirty && $v.docdate.$error)}"
+      />
+      <small class="error" v-if="(!$v.docdate.$required && $v.docdate.$dirty && $v.docdate.$error)">Введите дату выдачи документа</small>
 
 
       <button type="button" v-if="this.$v.$anyError"  disabled>Сохранить</button>
@@ -127,45 +159,53 @@
 <script>
 import { helpers, required, minLength } from "vuelidate/lib/validators";
 const alpha = helpers.regex("alpha", /^[а-яА-Яa-zA-Z]*$/);
+const telValodator = helpers.regex('telValidator',/^7\d{10}/gi);
 
 const defaultData = ()=>({
     lastName: "",
     name: "",
+    secondName: "",
     birthday: "",
     tel: "",
-    group: ["Группа пациентов"],
-    city: "",
+    sex: "Пол",
+    group: ["Группа пациентов (обязательно)"],
     doctor: "Лечащий врач",
-    doctype: "Тип документа",
-    docdate: "",
     sms: false,
+    postCode: "",
+    country: "",
+    region: "",
+    city: "",
+    street: "",
+    building: "",
+    doctype: "Тип документа (обязательно)",
+    serialNum: "",
+    docNum: "",
+    docWho: "",
+    docdate: "",
     success: '', 
   })
 export default {
   name: "RegisterForm",
-  //props: ["inputs"],
-  ///vuelidate
-
   data: () => defaultData(),
   validations: {
     lastName: { alpha, required, minLength: minLength(2) },
     name: { alpha, required, minLength: minLength(2) },
+    birthday: {required},
     group: { required },
-    doctor: { required },
     sms: false,
     city: { required, minLength: minLength(3), alpha },
-    doctype: {required}
+    doctype: {required}, 
+    docdate: {required},
+    tel: {required, telValodator, minLength: minLength(11)}
   },
   
   ///методы
   methods: {
-
+    
     resetData(){
       Object.assign(this.$data, defaultData())
     },
-    onInp(){
-      console.log(this.$v);
-    },
+   
 //при сабмите формы забираем все введённые данные в форму + выводим сообщение "новый клиент успешно создан"
     onSubmit() {
       const formData = {};
@@ -178,7 +218,7 @@ export default {
              formData[key] = this.$v[key].$model;
            }
          }
-         console.log(formData);
+         
          this.$v.$reset();
          this.resetData();
          
@@ -198,105 +238,125 @@ export default {
 
 <style scoped lang="scss">
 .main_form {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: white;
-  padding: 10px 40px;
-  border-radius: 15px;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background: white;
+	padding: 10px 40px;
+	border-radius: 15px;
+	width: 40%;
+	select {
+		>option {
+			&:disabled {
+				background: none;
+			}
+		}
+		box-sizing: border-box;
+		margin: 0 0 10px;
+		width: 100%;
+		padding: 10px;
+		border: none;
+		outline: none;
+		border-radius: 10px;
+		font-weight: bolder;
+		box-shadow: 0 4px 5px #ccc;
+		-webkit-box-shadow: 0 4px 5px #ccc;
+		-webkit-appearance: none;
+	}
+	input {
+		box-sizing: border-box;
+		margin: 0 0 10px;
+		width: 100%;
+		padding: 10px;
+		border: none;
+		outline: none;
+		border-radius: 10px;
+		font-weight: bolder;
+		box-shadow: 0 4px 5px #ccc;
+		-webkit-box-shadow: 0 4px 5px #ccc;
+		-webkit-appearance: none;
+		&::placeholder {
+			font-weight: bolder;
+			color: #000;
+		}
+	}
+	input.invalid {
+		box-shadow: 0 4px 5px rgb(255, 129, 129);
+		-webkit-box-shadow: 0 4px 5px rgb(255, 129, 129);
+		-webkit-appearance: none;
+	}
+	select.invalid {
+		box-shadow: 0 4px 5px rgb(255, 129, 129);
+		-webkit-box-shadow: 0 4px 5px rgb(255, 129, 129);
+		-webkit-appearance: none;
+	}
+	input[type="checkbox"] {
+		align-self: flex-start;
+		-webkit-appearance: checkbox;
+	}
+	input[type="date"] {
+		width: 100%;
+	}
+	span {
+		width: 100%;
+		font-size: 30px;
+		font-weight: bolder;
+		text-shadow: 0 3px 3px white;
+	}
+	small {
+		width: 100%;
+		color: rgb(255, 129, 129);
+	}
+	button {
+		width: 100%;
+		margin: 0 0 10px;
+		padding: 10px;
+		border: none;
+		outline: none;
+		border-radius: 10px;
+		font-weight: bolder;
+		box-shadow: 0 4px 5px #ccc;
+		-webkit-box-shadow: 0 4px 5px #ccc;
+		-webkit-appearance: none;
+		background: yellowgreen;
+		cursor: pointer;
+		&:hover {
+			transition: 0.4s;
+			background: rgb(102, 165, 2);
+		}
+		&:active {
+			background: rgb(67, 105, 1);
+		}
+		&:disabled {
+			cursor: not-allowed;
+		}
+	}
+	.group {
+		width: 100%;
+		align-self: start;
+		text-align: left;
+		label {
+			width: 100%;
+			margin: 0 0 0 5px;
+		}
+		input {
+			width: unset;
+			border-radius: 0;
+		}
+	}
+	label {
+		width: 100%;
+		text-align: left;
+	}
+	input.required {
+		box-shadow: rgb(73, 151, 253);
+	}
 }
-
-.main_form {
-  width: 40%;
-  
-  input,
-  select {
-    box-sizing: border-box;
-    margin: 0 0 10px;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    font-weight: bolder;
-    box-shadow: 0 4px 5px #ccc;
-    -webkit-box-shadow: 0 4px 5px #ccc;
-    -webkit-appearance: none;
-    
-    &.invalid {
-      box-shadow: 0 4px 5px rgb(255, 129, 129);
-      -webkit-box-shadow: 0 4px 5px rgb(255, 129, 129);
-      -webkit-appearance: none;
-    }
-    &[type="checkbox"] {
-      align-self: flex-start;
-      -webkit-appearance: checkbox;
-    }
-    &[type="date"] {
-      width: 100%;
-    }
-  }
-  span{ 
-    width: 100%;
-  }
-  small {
-    color: rgb(255, 129, 129);
-    align-self: start;
-    font-weight: bold;
-    width: 100%;
-  }
-  button {
-    width: 100%;
-    margin: 0 0 10px;
-    padding: 10px;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    font-weight: bolder;
-    box-shadow: 0 4px 5px #ccc;
-     -webkit-box-shadow: 0 4px 5px #ccc;
-    -webkit-appearance: none;
-    background: yellowgreen;
-    cursor: pointer;
-    &:hover {
-      transition: 0.4s;
-      background: rgb(102, 165, 2);
-    }
-    &:active {
-      background: rgb(67, 105, 1);
-    }
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
-
-  
-}
-
-.group {
-    width: 100%;
-    align-self: start;
-    text-align: left;
-    label {
-      width: 100%;
-      margin: 0 0 0 5px;
-    }
-    input {
-      width: unset;
-      border-radius: 0;
-    }
-  }
-span {
-  width: 100%;
-  font-size: 30px;
-  font-weight: bolder;
-  text-shadow: 0 3px 3px white;
-}
-
 @media screen and(max-width: 530px) {
-      .main_form {
-        width: 70%;
-      }
+	.main_form {
+		width: 70%;
+	}
 }
+
 </style>
