@@ -100,6 +100,8 @@ $errorColor: rgb(252, 119, 119);
       box-shadow: 0 0 3px $borderColor;
       z-index: 0;
       padding: 10px;
+      -webkit-box-shadow: 0 4px 5px $borderColor;
+      -webkit-appearance: none;
         &.input_error {
           box-shadow: 0 0 3px $errorColor;
         }
