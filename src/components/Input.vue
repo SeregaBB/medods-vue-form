@@ -45,6 +45,12 @@ export default {
         : !this.$v.inp.minLength
         ? (this.errText = `${this.inp_placeholder.toLowerCase()} не может быть короче ${this.min_length} символов`)
         : (this.errText = "");
+
+        this.$emit('onUpdate', {
+          inp: this.inp,
+          name: this.inp_name, 
+          isValid: !this.$v.inp.$error
+        })
     }
   },
   validations() {
@@ -100,7 +106,7 @@ $errorColor: rgb(252, 119, 119);
       box-shadow: 0 0 3px $borderColor;
       z-index: 0;
       padding: 10px;
-      -webkit-box-shadow: 0 4px 5px $borderColor;
+      -webkit-box-shadow: 0 0px 3px $borderColor;
       -webkit-appearance: none;
         &.input_error {
           box-shadow: 0 0 3px $errorColor;
