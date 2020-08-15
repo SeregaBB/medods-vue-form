@@ -9,9 +9,13 @@
     @click="validate"
     @change="validate"
     >
-    <option value="test">Test1</option>
-    <option value="test2">Test2</option>
-    <option value="test3">Test3</option>
+    <option 
+    v-for="(option,index) in options" 
+    :key="index" 
+    :value="option.value">
+    {{option.name}}
+    </option>
+
     </select>
 
     <span class="error">
@@ -35,7 +39,8 @@ export default {
   props: {
     inp_name: String, 
     inp_placeholder: String,
-    isRequired: Boolean
+    isRequired: Boolean, 
+    options: Array
   },
 
   methods: {
@@ -43,6 +48,8 @@ export default {
           this.$v.$touch();
           if (!this.$v.selector.required) this.errText = `Выберите один из вариантов в поле "${this.inp_placeholder}"`;
           if (!this.$v.selector.$error) this.errText = '';
+
+
           this.$emit('onUpdate', {
           inp: this.selector,
           name: this.inp_name, 
@@ -73,7 +80,7 @@ select {
       box-shadow: 0 0 3px $borderColor;
       z-index: 0;
       padding: 10px;
-      -webkit-box-shadow: 0 4px 5px $borderColor;
+      -webkit-box-shadow: 0 0px 3px $borderColor;
       -webkit-appearance: none;
         &.input_error {
           box-shadow: 0 0 3px $errorColor;

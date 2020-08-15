@@ -7,21 +7,12 @@
       <Input inp_type="text"  inp_name="second_name" @onUpdate="update" inp_placeholder="Отчество" :isRequired=false />
       <Input inp_type="date"  inp_name="birth"  @onUpdate="update" inp_placeholder="Дата рождения" :isRequired=true /> <!--Дата рождения-->
       <Input inp_type="tel"  inp_name="tel" @onUpdate="update" inp_placeholder="Телефон" :isRequired=true />
-      <!-- СДЕЛАТЬ КОМПОНЕНТ СЕЛЕКТОР <Input inp_type="select"  inp_name="sex" inp_placeholder="Пол" :isRequired=false />--> 
+      <Select inp_name="sex" inp_placeholder="Пол" @onUpdate="update" :options="[{name: 'Мужской', value: 'Male'}, {name: 'Женский', value: 'Famale'}]" :isRequired=false />
       <!--СДЕЛАТЬ КОМПОНЕНТ МУЛЬТИСЕЛЕКТОР<s inp_type="selector multy"  inp_name="group" inp_placeholder="Группа пациентов" :isRequired=false />-->
       <Input inp_type="email"  inp_name="email" @onUpdate="update" inp_placeholder="Email" :min_length=6 :isRequired=true />
-      <!-- СДЕЛАТЬ КОМПОНЕНТ СЕЛЕКТОР <Input inp_type="select"  inp_name="doctor" inp_placeholder="Лечащий врач" :isRequired=false />--> 
+      <Select inp_name="пол" :options="[{name: 'Мужской', value: 'Male'}, {name: 'Женский', value: 'Famale'}]" inp_placeholder="Пол" :isRequired=false />
       <!--КОМПОНЕНТ ЧЕКБОКС, допилить как нибудь в компонент инпут<Input inp_type="text"  inp_name="sms" inp_placeholder="не отправлять смс" :isRequired=false />-->
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Input inp_type="text"  inp_name="city" @onUpdate="update" inp_placeholder="Город" :isRequired=false />
-      <Select inp_name="selector_test" @onUpdate="update" inp_placeholder="selector" :isRequired=true />
+      <Select inp_name="doctor" @onUpdate="update" inp_placeholder="Лечащий врач" :options="[{name: 'Иванов', value: 'Ivanov'}, {name: 'Захаров', value: 'Zakhar'}, {name: 'Чернышов', value: 'Chernysh'}]" :isRequired=true />
     </form>
   </div>
 </template>
