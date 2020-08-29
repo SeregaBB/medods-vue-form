@@ -19,8 +19,7 @@
 
 
 <script>
-import { requiredIf, minLength } from "vuelidate/lib/validators";
-
+import {  requiredIf, minLength, maxLength } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
@@ -32,19 +31,24 @@ export default {
     inp_type: String,
     inp_name: String,
     min_length: Number,
+    max_length: Number,
     isRequired: Boolean,
-    inp_placeholder: String
+    inp_placeholder: String,
+    special_pattern: String,
+    special_format: String
   },
 
   methods: {
     validate() {
       this.$v.$touch();
       console.log(this.$v.inp);
-      !this.$v.inp.required
-        ? (this.errText = `Заполните поле "${this.inp_placeholder}"`)
-        : !this.$v.inp.minLength
-        ? (this.errText = `${this.inp_placeholder.toLowerCase()} не может быть короче ${this.min_length} символов`)
-        : (this.errText = "");
+
+      if (!this.$v.inp.required) this.errText = `Заполните поле "${this.inp_placeholder}"`
+      if (!this.$v.inp.minLength) this.errText = `${this.inp_placeholder.toLowerCase()} не может быть короче ${this.min_length} символов. Сейчас введено ${this.inp.length}`
+      if (!this.$v.inp.maxLength) this.errText = `${this.inp_placeholder.toLowerCase()} не может быть длиннее ${this.max_length} символов. Сейчас введено ${this.inp.length}`
+      if (!this.$v.inp.spec_validator) this.errText = `Заполните поле в формате ${this.special_format}`
+
+      if (!this.$v.inp.$error) this.errText = "";
 
         this.$emit('onUpdate', {
           inp: this.inp,
@@ -61,7 +65,17 @@ export default {
         }),
         minLength: minLength(
           this.min_length && this.isRequired ? this.min_length : 0
-        )
+        ),
+        maxLength: maxLength(
+          this.max_length ? this.max_length: 999
+        ),
+        spec_validator:  (input) => {
+             if (this.special_pattern) {
+               const reg = new RegExp(this.special_pattern, 'gi');
+               return reg.test(input);
+             }
+             return true;
+        }
       }
     };
   }
@@ -96,7 +110,7 @@ $errorColor: rgb(252, 119, 119);
     }
     .error {
       display: block;
-      height: 25px;
+      height: 30px;
       color: $errorColor;
     }
     input {

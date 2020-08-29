@@ -6,8 +6,9 @@
       <Input inp_type="text" inp_name="name" @onUpdate="update" inp_placeholder="Имя" :min_length=2 :isRequired=true />
       <Input inp_type="text"  inp_name="second_name" @onUpdate="update" inp_placeholder="Отчество" :isRequired=false />
       <Input inp_type="date"  inp_name="birth"  @onUpdate="update" inp_placeholder="Дата рождения" :isRequired=true /> <!--Дата рождения-->
-      <Input inp_type="tel"  inp_name="tel" @onUpdate="update" inp_placeholder="Телефон" :isRequired=true />
+      <Input inp_type="tel"  inp_name="tel" @onUpdate="update" inp_placeholder="Телефон" :min_length=11 :max_length=11 special_format="70000000000" special_pattern="^7\d{10}"  :isRequired=true />
       <Select inp_name="sex" inp_placeholder="Пол" @onUpdate="update" :options="[{name: 'Мужской', value: 'Male'}, {name: 'Женский', value: 'Famale'}]" :isRequired=false />
+      <checkbox inp_placeholder="СМС уведомления"  onTrue="Уберите галочку, если не хотите получать от нас СМС" onFalse="Поставьте галочку, если не против получать от нас СМС"/>
       <!--СДЕЛАТЬ КОМПОНЕНТ МУЛЬТИСЕЛЕКТОР<s inp_type="selector multy"  inp_name="group" inp_placeholder="Группа пациентов" :isRequired=false />-->
       <Input inp_type="email"  inp_name="email" @onUpdate="update" inp_placeholder="Email" :min_length=6 :isRequired=true />
       <Select inp_name="пол" :options="[{name: 'Мужской', value: 'Male'}, {name: 'Женский', value: 'Famale'}]" inp_placeholder="Пол" :isRequired=false />
@@ -20,6 +21,7 @@
 <script>
 import Input from "../components/Input.vue"
 import Select from "../components/Selector.vue";
+import Checkbox from '../components/Checkbox.vue';
 
 export default {
   name: "RegisterForm",
@@ -30,18 +32,18 @@ export default {
   },
   methods: {
     update(data){
-      console.log(this)
-      console.log(data);
+     
       this.$data[data.name] = {
        isValid: data.isValid,
         val: data.inp
       }
-      console.log(this.$data)
+    
     }
   },
   components: {
     Input,
-    Select
+    Select,
+    Checkbox
   },
 };
 </script>
