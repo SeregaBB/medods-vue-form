@@ -44,7 +44,7 @@ export default {
       console.log(this.$v.inp);
 
       if (!this.$v.inp.required) this.errText = `Заполните поле "${this.inp_placeholder}"`
-      if (!this.$v.inp.minLength) this.errText = `${this.inp_placeholder.toLowerCase()} не может быть короче ${this.min_length} символов. Сейчас введено ${this.inp.length}`
+      if (!this.$v.inp.required && !this.$v.inp.minLength) this.errText = `${this.inp_placeholder.toLowerCase()} не может быть короче ${this.min_length} символов. Сейчас введено ${this.inp.length}`
       if (!this.$v.inp.maxLength) this.errText = `${this.inp_placeholder.toLowerCase()} не может быть длиннее ${this.max_length} символов. Сейчас введено ${this.inp.length}`
       if (!this.$v.inp.spec_validator) this.errText = `Заполните поле в формате ${this.special_format}`
 

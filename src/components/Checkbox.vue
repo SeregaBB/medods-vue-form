@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       inp: false,
-      checkbox_text: this.onFalse
+      checkbox_text: this.onFalse,
     };
   },
   props: {
@@ -37,6 +37,12 @@ export default {
     onChangeCheckbox(){
         if (this.inp) this.checkbox_text = this.onTrue //текст, который будет показан, когда чекбоск выбран
         else this.checkbox_text = this.onFalse // текст в противном случае
+
+        this.$emit('onUpdate', {
+          inp: this.inp,
+          name: this.inp_name, 
+          isValid:  this.isRequired ? !this.$v.inp.$error : true //если чекбокс НЕ обязателен, то всегда валиден  (оставил для редких случаев, когда чекбокс может быть обязателен, например "принять соглашение")
+        })
     }
   }
 }
