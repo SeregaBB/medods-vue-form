@@ -27,6 +27,14 @@ export default {
       errText: ""
     };
   },
+  mounted(){
+      this.$emit('onUpdate', {
+          inp: this.inp,
+          name: this.inp_name, 
+          isValid: !this.$v.inp.$error,
+          isRequired: this.isRequired
+    })
+  },
   props: {
     inp_type: String,
     inp_name: String,
@@ -41,10 +49,9 @@ export default {
   methods: {
     validate() {
       this.$v.$touch();
-      console.log(this.$v.inp);
-
+       
       if (!this.$v.inp.required) this.errText = `Заполните поле "${this.inp_placeholder}"`
-      if (!this.$v.inp.required && !this.$v.inp.minLength) this.errText = `${this.inp_placeholder.toLowerCase()} не может быть короче ${this.min_length} символов. Сейчас введено ${this.inp.length}`
+      if (!this.$v.inp.minLength && this.$v.inp.required) this.errText = `${this.inp_placeholder.toLowerCase()} не может быть короче ${this.min_length} символов. Сейчас введено ${this.inp.length}`
       if (!this.$v.inp.maxLength) this.errText = `${this.inp_placeholder.toLowerCase()} не может быть длиннее ${this.max_length} символов. Сейчас введено ${this.inp.length}`
       if (!this.$v.inp.spec_validator) this.errText = `Заполните поле в формате ${this.special_format}`
 
@@ -53,7 +60,8 @@ export default {
         this.$emit('onUpdate', {
           inp: this.inp,
           name: this.inp_name, 
-          isValid: !this.$v.inp.$error
+          isValid: !this.$v.inp.$error,
+          isRequired: this.isRequired
         })
     }
   },
@@ -79,7 +87,7 @@ export default {
       }
     };
   }
-};
+}
 </script>
 
 

@@ -36,10 +36,19 @@ export default {
      selector: ''
     };
   },
+  mounted(){
+      this.$emit('onUpdate', {
+          inp: this.selector,
+          name: this.inp_name, 
+          isValid: !this.$v.selector.$error,
+          isRequired: this.isRequired
+    })
+  },
   props: {
     inp_name: String, 
     inp_placeholder: String,
     isRequired: Boolean, 
+    isMultiple: Boolean,
     options: Array
   },
 
