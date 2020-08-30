@@ -1,17 +1,15 @@
 <template>
   <div :class="[{required: isRequired},'input_group']">
     <label :for="inp_name">{{inp_placeholder}}</label>
-    <input 
-    type="checkbox" 
-    :name="inp_name" 
-    v-model="inp" 
-    @change="onChangeCheckbox"
-    class="checkbox"
+    <input
+      type="checkbox"
+      :name="inp_name"
+      v-model="inp"
+      @change="onChangeCheckbox"
+      class="checkbox"
     />
 
-    <span class="checkbox_text">
-      {{checkbox_text}}
-    </span>
+    <span class="checkbox_text">{{checkbox_text}}</span>
   </div>
 </template>
 
@@ -22,7 +20,7 @@ export default {
   data() {
     return {
       inp: false,
-      checkbox_text: this.onFalse,
+      checkbox_text: this.onFalse
     };
   },
   props: {
@@ -34,44 +32,50 @@ export default {
   },
 
   methods: {
-    onChangeCheckbox(){
-        if (this.inp) this.checkbox_text = this.onTrue //текст, который будет показан, когда чекбоск выбран
-        else this.checkbox_text = this.onFalse // текст в противном случае
+    refreshInput() {
+      this.inp = false;
+      this.checkbox_text = this.onFalse;
+      if (this.isRequired) this.$v.$reset();
+    },
+    onChangeCheckbox() {
+      if (this.inp) this.checkbox_text = this.onTrue;
+      //текст, который будет показан, когда чекбоск выбран
+      else this.checkbox_text = this.onFalse; // текст в противном случае
 
-        this.$emit('onUpdate', {
-          inp: this.inp,
-          name: this.inp_name, 
-          isValid:  this.isRequired ? !this.$v.inp.$error : true //если чекбокс НЕ обязателен, то всегда валиден  (оставил для редких случаев, когда чекбокс может быть обязателен, например "принять соглашение")
-        })
+      this.$emit("onUpdate", {
+        inp: this.inp,
+        name: this.inp_name,
+        isValid: this.isRequired ? !this.$v.inp.$error : true //если чекбокс НЕ обязателен, то всегда валиден  (оставил для редких случаев, когда чекбокс может быть обязателен, например "принять соглашение")
+      });
     }
   }
-}
+};
 </script>
 
 
 <style lang="scss" scoped>
 input.checkbox {
-   background: unset;
-   width: 20px;
-   border-radius: 50px;
-   outline: none;
-   border: none;
-   box-shadow: none;
-   -webkit-appearance: checkbox;
+  background: unset;
+  width: 20px;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  -webkit-appearance: checkbox;
 }
 .input_group {
-    display: flex;
-    flex-direction: row;
-    margin: 0 0 30px 0;
-    box-shadow: 0 0 3px #ccc;
-    border-radius: 19px;
-    padding: 10px;
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 30px 0;
+  box-shadow: 0 0 3px #ccc;
+  border-radius: 19px;
+  padding: 10px;
 }
 label {
-    position: absolute;
-    z-index: 1;
-    top: -25%;
-    left: 2%;
-    background: #fff;
+  position: absolute;
+  z-index: 1;
+  top: -25%;
+  left: 2%;
+  background: #fff;
 }
 </style>
