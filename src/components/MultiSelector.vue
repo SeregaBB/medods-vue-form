@@ -1,23 +1,28 @@
 <template>
-  <div :class="[{required: isRequired},'input_group']">
-    <label :for="inp_name">{{inp_placeholder}}</label>
+  <div :class="[{ required: isRequired }, 'input_group']">
+    <label :for="inp_name">{{ inp_placeholder }}</label>
     <input
       type="text"
       v-model="input_values"
       @click="toggleOptions"
-      :class="[{input_error : $v.multi_selector.$error}]"
+      :class="[{ input_error: $v.multi_selector.$error }]"
     />
     <div class="options">
-      <span class="close" @click="toggleOptions" >✖</span>
+      <span class="close" @click="toggleOptions">✖</span>
       <div
         class="opt_group"
-        v-for="(option,index) in options"
+        v-for="(option, index) in options"
         :key="index"
         :value="option.value"
         :name="option.name"
       >
-        <input type="checkbox" :name="option.name" :value="option.value" @change="onChangeCheckbox" />
-        <span>{{option.name}}</span>
+        <input
+          type="checkbox"
+          :name="option.name"
+          :value="option.value"
+          @change="onChangeCheckbox"
+        />
+        <span>{{ option.name }}</span>
       </div>
     </div>
     <!-- <select 
@@ -41,11 +46,9 @@
 
     </select>
     -->
-    <span class="error">{{errText}}</span>
+    <span class="error">{{ errText }}</span>
   </div>
 </template>
-
-
 
 <script>
 import { requiredIf } from "vuelidate/lib/validators";
@@ -128,7 +131,6 @@ export default {
 };
 </script>
 
-
 <style lang="scss">
 $borderColor: #ccc;
 $errorColor: rgb(252, 119, 119);
@@ -159,7 +161,7 @@ input[type="checkbox"] {
   &.opened {
     display: flex;
   }
-  .close{
+  .close {
     position: absolute;
     top: 2px;
     right: 5px;

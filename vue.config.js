@@ -1,5 +1,3 @@
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production'
-      ? '/medods-vue-form/'
-      : '/'
-  }
+  publicPath: process.env.NODE_ENV === "production" ? "/medods-vue-form/" : "/"
+};

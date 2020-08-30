@@ -1,6 +1,6 @@
 <template>
-  <div :class="[{required: isRequired},'input_group']">
-    <label :for="inp_name">{{inp_placeholder}}</label>
+  <div :class="[{ required: isRequired }, 'input_group']">
+    <label :for="inp_name">{{ inp_placeholder }}</label>
     <input
       type="checkbox"
       :name="inp_name"
@@ -9,11 +9,9 @@
       class="checkbox"
     />
 
-    <span class="checkbox_text">{{checkbox_text}}</span>
+    <span class="checkbox_text">{{ checkbox_text }}</span>
   </div>
 </template>
-
-
 
 <script>
 export default {
@@ -51,7 +49,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss" scoped>
 input.checkbox {

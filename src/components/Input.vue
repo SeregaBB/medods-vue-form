@@ -1,19 +1,17 @@
 <template>
-  <div :class="[{required: isRequired},'input_group']">
-    <label :for="inp_name">{{inp_placeholder}}</label>
+  <div :class="[{ required: isRequired }, 'input_group']">
+    <label :for="inp_name">{{ inp_placeholder }}</label>
     <input
       :type="inp_type"
       :name="inp_name"
       @input="validate"
       v-model="inp"
-      :class="[{input_error : $v.inp.$error}]"
+      :class="[{ input_error: $v.inp.$error }]"
     />
 
-    <span class="error">{{errText}}</span>
+    <span class="error">{{ errText }}</span>
   </div>
 </template>
-
-
 
 <script>
 import { requiredIf, minLength, maxLength } from "vuelidate/lib/validators";
@@ -97,7 +95,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss">
 $borderColor: #ccc;

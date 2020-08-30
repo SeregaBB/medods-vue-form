@@ -52,13 +52,20 @@
         inp_name="sex"
         inp_placeholder="Пол"
         @onUpdate="update"
-        :options="[{name: 'Мужской', value: 'Male'}, {name: 'Женский', value: 'Famale'}]"
+        :options="[
+          { name: 'Мужской', value: 'Male' },
+          { name: 'Женский', value: 'Famale' }
+        ]"
         :isRequired="false"
       />
 
       <MultiSelect
         inp_name="group"
-        :options="[{name: 'VIP', value: 'vip'}, {name: 'Проблемные', value: 'problem'}, {name: 'ОМС', value: 'oms'}]"
+        :options="[
+          { name: 'VIP', value: 'vip' },
+          { name: 'Проблемные', value: 'problem' },
+          { name: 'ОМС', value: 'oms' }
+        ]"
         inp_placeholder="Группа пациентов"
         @onUpdate="update"
         :isRequired="true"
@@ -73,7 +80,10 @@
       />
       <Select
         inp_name="пол"
-        :options="[{name: 'Мужской', value: 'Male'}, {name: 'Женский', value: 'Famale'}]"
+        :options="[
+          { name: 'Мужской', value: 'Male' },
+          { name: 'Женский', value: 'Famale' }
+        ]"
         inp_placeholder="Пол"
         :isRequired="false"
       />
@@ -82,7 +92,11 @@
         inp_name="doctor"
         @onUpdate="update"
         inp_placeholder="Лечащий врач"
-        :options="[{name: 'Иванов', value: 'Ivanov'}, {name: 'Захаров', value: 'Zakhar'}, {name: 'Чернышов', value: 'Chernysh'}]"
+        :options="[
+          { name: 'Иванов', value: 'Ivanov' },
+          { name: 'Захаров', value: 'Zakhar' },
+          { name: 'Чернышов', value: 'Chernysh' }
+        ]"
         :isRequired="true"
       />
       <checkbox
@@ -145,7 +159,11 @@
         inp_name="docType"
         @onUpdate="update"
         inp_placeholder="Тип документа"
-        :options="[{name: 'Паспорт', value: 'Pass'}, {name: 'Свидетельство о рождении', value: 'birthCert'}, {name: 'Водительское удостоверение', value: 'driversLic'}]"
+        :options="[
+          { name: 'Паспорт', value: 'Pass' },
+          { name: 'Свидетельство о рождении', value: 'birthCert' },
+          { name: 'Водительское удостоверение', value: 'driversLic' }
+        ]"
         :isRequired="true"
       />
       <Input
@@ -195,18 +213,17 @@ export default {
   data() {
     return {
       valid_form: false,
-      success_message: ''
+      success_message: ""
     };
   },
   methods: {
     update(data) {
-      this.success_message = '';
+      this.success_message = "";
       this.$data[data.name] = {
         isValid: data.isValid,
         val: data.inp,
         isRequired: data.isRequired
       };
-      
     },
     onSubmit(event) {
       event.preventDefault();
@@ -219,12 +236,13 @@ export default {
         .filter(item => item.isRequired)
         .every(item => item.val.length > 0 && item.isValid);
       if (this.valid_form) {
-        this.success_message = 'Новый пациент создан'
-        console.groupCollapsed('Данные, принятые от формы');
+        this.success_message = "Новый пациент создан";
+        console.groupCollapsed("Данные, принятые от формы");
         console.info(this.$data);
         this.resetForm();
       }
-      if(!this.valid_form) this.success_message = 'Проверьте корректность заполнения полей'
+      if (!this.valid_form)
+        this.success_message = "Проверьте корректность заполнения полей";
     },
     resetForm() {
       this.$children.forEach(item => {
@@ -240,7 +258,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped lang="scss">
 .main_form {

@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <RegisterForm/>
+    <RegisterForm />
   </div>
 </template>
 
 <script>
 import RegisterForm from "./components/RegisterForm.vue";
-document.title = 'Vue Form';
+document.title = "Vue Form";
 export default {
   name: "App",
   components: {
     RegisterForm
-  },
+  }
 };
 </script>
 
@@ -24,10 +24,10 @@ export default {
   color: #15202b;
   margin: 0;
   width: 100vw;
-  background-image: url('./assets/back.jpg');
+  background-image: url("./assets/back.jpg");
   padding: 20px 0;
 }
-body{ 
-  margin: 0
+body {
+  margin: 0;
 }
 </style>
