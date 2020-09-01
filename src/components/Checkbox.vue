@@ -36,10 +36,7 @@ export default {
       if (this.isRequired) this.$v.$reset();
     },
     onChangeCheckbox() {
-      if (this.inp) this.checkbox_text = this.onTrue;
-      //текст, который будет показан, когда чекбоск выбран
-      else this.checkbox_text = this.onFalse; // текст в противном случае
-
+      this.inp ? (this.checkbox_text = this.onTrue) : (this.checkbox_text = this.onFalse); 
       this.$emit("onUpdate", {
         inp: this.inp,
         name: this.inp_name,
