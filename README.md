@@ -1,5 +1,5 @@
 # medodsvue
-
+ссылка на gh-pages: https://seregabb.github.io/medods-vue-form/
 ## Project setup
 ```
 npm install
